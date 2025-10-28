@@ -1,5 +1,5 @@
-#CIE205 - Data Structures Project (2025)#
---------Zewail City--------
+#CIE205 - Data Structures Project (2025)
+#--------Zewail City--------#
 # Data Structure Project
 
 This project is made for the **CIE205 - Data Structures and Algorithms** course.  
