@@ -87,3 +87,36 @@ public:
 
 
 };
+template<typename T>
+class Restaurant {
+private:
+	// lists of cooks
+	LinkedList<Cook*> normalCooks;
+	LinkedList<Cook*> veganCooks;
+	LinkedList<Cook*> vipCooks;
+
+	// waiting orders
+	Queue<Order*> normalOrders;
+	Queue<Order*> veganOrders;
+	PriorityQueue<Order*> vipOrders;
+
+	// in-service & finished
+	LinkedList<Order*> inServiceOrders;
+	LinkedList<Order*> finishedOrders;
+
+	// events
+	Queue<Event*> events;
+
+	int AutoPromotionLimit;
+	int CurrentTimeStep;
+public:
+	void LoadFile(string filename);
+	void SimpleSimulator();
+};
+
+class Event {
+
+
+
+public:	
+};
