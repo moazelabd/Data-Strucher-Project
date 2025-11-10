@@ -30,12 +30,6 @@ It manages customers, orders, and menu items efficiently using linked lists and 
 
 ---
 
-## 🚀 How to Run
-1. Open the project in **Visual Studio**.  
-2. Make sure the project type is set to **Console Application**.  
-3. Build and run the project (**Ctrl + F5**).
-
----
 
 ## 👥 Team Members
 - **Leader:** Moaz Elabd  
