@@ -1,51 +1,32 @@
-#ifndef _NODE
-#define _NODE
+#ifndef NODE_H
+#define NODE_H
 
-//First let's declare a single node in the list
-template<typename T>
-class Node
-{
+template <typename T>
+class Node {
 private:
-	T item;	// A data item (can be any complex sturcture)
-	Node<T>* next;	// Pointer to next node
+    T item;          // Data item
+    Node<T>* next;   // Pointer to next node
+
 public:
+    Node() : next(nullptr) {}
 
-	Node() //default constructor
-	{
-		next = nullptr;
-	}
+    Node(const T& newItem) : item(newItem), next(nullptr) {}
 
-	Node(T newItem) //non-default constructor
-	{
-		item = newItem;
-		next = nullptr;
+    void setItem(const T& newItem) {
+        item = newItem;
+    }
 
-	}
+    void setNext(Node<T>* nextNodePtr) {
+        next = nextNodePtr;
+    }
 
-	void setItem(T newItem)
-	{
-		item = newItem;
-	} // end setItem
+    T getItem() const {
+        return item;
+    }
 
-	void setNext(Node<T>* nextNodePtr)
-	{
-		next = nextNodePtr;
-	} // end setNext
-	void setBack(Node<T>* prevNodePtr) {
-		back = prevNodePtr;
-	}
-	T getItem() const
-	{
-		return item;
-	} // end getItem
+    Node<T>* getNext() const {
+        return next;
+    }
+};
 
-	Node<T>* getNext() const
-	{
-		return next;
-	}
-	Node<T>* getBack() const {
-		return back;
-	}
-}; // end Node
-
-#endif	
+#endif

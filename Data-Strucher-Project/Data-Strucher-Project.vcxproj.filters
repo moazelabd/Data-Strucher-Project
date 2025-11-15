@@ -27,6 +27,12 @@
     <ClCompile Include="classes.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="LinkedQueue.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueADT.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">

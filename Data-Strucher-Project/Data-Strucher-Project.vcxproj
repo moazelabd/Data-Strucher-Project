@@ -127,6 +127,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="classes.cpp" />
     <ClCompile Include="classes.h" />
+    <ClCompile Include="LinkedQueue.h" />
+    <ClCompile Include="QueueADT.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h" />
