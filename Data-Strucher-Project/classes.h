@@ -1,8 +1,10 @@
 #ifndef CLASSES_H
 #define CLASSES_H
 
-#include <iostream>
+
 #include <string>
+#include "LinkedQueue.h"
+#include "Linkedlist.h"
 using namespace std;
 
 // ENUMS
@@ -131,5 +133,33 @@ public:
 
     void print() const;
 };
+class Restaurant {
+private:
+
+    LinkedList<Cook*> normalCooks;
+    LinkedList<Cook*> veganCooks;
+    LinkedList<Cook*> vipCooks;
+
+
+    LinkedQueue<Order*> normalOrders;
+    LinkedQueue<Order*> veganOrders;
+    LinkedQueue<Order*> vipOrders;
+
+
+    LinkedList<Order*> inServiceOrders;
+    LinkedList<Order*> finishedOrders;
+
+
+    LinkedQueue<Event*> events;
+
+    int AutoPromotionLimit;
+    int CurrentTimeStep;
+
+public:
+    Restaurant();
+    void LoadFile(const std::string& filename);
+    void SimpleSimulator();
+};
+
 
 #endif

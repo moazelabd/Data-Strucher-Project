@@ -14,6 +14,7 @@ class LinkedQueue :public QueueADT<T>
 private:
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
+	int count;
 public:
 	LinkedQueue();
 	bool isEmpty() const;
@@ -22,6 +23,8 @@ public:
 	void circularQueueOnce();
 	void display() const;
 	bool peek(T& frntEntry)  const;
+	int GetCount() const;
+
 
 	~LinkedQueue();
 };
@@ -83,8 +86,9 @@ LinkedQueue<T>::LinkedQueue()
 {
 	backPtr = nullptr;
 	frontPtr = nullptr;
-
+	count = 0;
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -113,15 +117,15 @@ template <typename T>
 bool LinkedQueue<T>::enqueue(const T& newEntry)
 {
 	Node<T>* newNodePtr = new Node<T>(newEntry);
-	// Insert the new node
-	if (isEmpty())	//special case if this is the first node to insert
-		frontPtr = newNodePtr; // The queue is empty
+	if (isEmpty())
+		frontPtr = newNodePtr;
 	else
-		backPtr->setNext(newNodePtr); // The queue was not empty
-
-	backPtr = newNodePtr; // New node is the last node now
+		backPtr->setNext(newNodePtr);
+	backPtr = newNodePtr;
+	count++; // increment count
 	return true;
-} // end enqueue
+}
+// end enqueue
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,17 +143,16 @@ bool LinkedQueue<T>::dequeue(T& frntEntry)
 {
 	if (isEmpty())
 		return false;
-
 	Node<T>* nodeToDeletePtr = frontPtr;
 	frntEntry = frontPtr->getItem();
 	frontPtr = frontPtr->getNext();
-
 	if (nodeToDeletePtr == backPtr)
 		backPtr = nullptr;
-
 	delete nodeToDeletePtr;
+	count--; // decrement count
 	return true;
 }
+
 
 
 
@@ -191,5 +194,9 @@ LinkedQueue<T>::~LinkedQueue()
 	cout << "\nEnding LinkedQueue destructor..." << endl;
 }
 
-
+template <typename T>
+int LinkedQueue<T>::GetCount() const
+{
+	return count;
+}
 #endif

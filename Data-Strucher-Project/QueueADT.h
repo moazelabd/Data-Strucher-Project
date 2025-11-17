@@ -5,7 +5,6 @@
 /** @file QueueADT.h */
 #ifndef QUEUE_ADT_
 #define QUEUE_ADT_
-#include <iostream>
 template<class T>
 class QueueADT
 {
