@@ -6,6 +6,7 @@
 
 #include "Node.h"
 #include "QueueADT.h"
+#include <iostream>
 using namespace std;
 template <typename T>
 class LinkedQueue :public QueueADT<T>
@@ -18,7 +19,7 @@ public:
 	bool isEmpty() const;
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
-	void LinkedQueue<T>::circularQueueOnce();
+	void circularQueueOnce();
 	void display() const;
 	bool peek(T& frntEntry)  const;
 
