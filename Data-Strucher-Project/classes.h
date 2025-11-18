@@ -26,11 +26,10 @@ private:
     double finishTime;
     double deadline;
     Orderstatus Status;
-
 public:
     Order();
     ~Order();
-
+    //setters
     void setArrivalTime(double t);
     void setOrderType(OrderType t);
     void setOrderSize(int size);
@@ -41,7 +40,7 @@ public:
     void setFinishTime(double ft);
     void setDeadline(double d);
     void setStatus(Orderstatus s);
-
+    //getters
     double getArraivalTime() const;
     OrderType getType() const;
     int getOrderSize() const;
@@ -52,7 +51,7 @@ public:
     double getFinishTime() const;
     double getDeadline() const;
     Orderstatus getStatus() const;
-
+    // Print order data
     void print() const;
 };
 
@@ -76,7 +75,7 @@ private:
 public:
     Cook();
     ~Cook();
-
+    //setters
     void setSpecialization(OrderType spec);
     void setBreakDuration(int duration);
     void setBaseSpeed(int speed);
@@ -90,7 +89,7 @@ public:
     void setIdleTime(int t);
     void setBreakTime(int t);
     void setInjuryTime(int t);
-
+    //getters
     OrderType getSpecialization() const;
     int getBreakDuration() const;
     int getBaseSpeed() const;
@@ -118,38 +117,38 @@ private:
 public:
     Event(EventType t, int ts, Order* o = nullptr, int id = -1, double m = 0.0);
     ~Event();
-
+    //setters
     void setType(EventType t);
     void setTimeStep(int ts);
     void setOrder(Order* o);
     void setOrderID(int id);
     void setExtraMoney(double m);
-
+    //getters
     EventType getType() const;
     int getTimeStep() const;
     Order* getOrder() const;
     int getOrderID() const;
     double getExtraMoney() const;
-
+    //print evebt values
     void print() const;
 };
 class Restaurant {
 private:
-
+    // lists of cooks
     LinkedList<Cook*> normalCooks;
     LinkedList<Cook*> veganCooks;
     LinkedList<Cook*> vipCooks;
 
-
+    // waiting orders
     LinkedQueue<Order*> normalOrders;
     LinkedQueue<Order*> veganOrders;
     LinkedQueue<Order*> vipOrders;
 
-
+    // in_service and finished
     LinkedList<Order*> inServiceOrders;
     LinkedList<Order*> finishedOrders;
 
-
+    // events
     LinkedQueue<Event*> events;
 
     int AutoPromotionLimit;

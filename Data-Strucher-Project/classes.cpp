@@ -155,7 +155,7 @@ resturant class
 // Constructor
 Restaurant::Restaurant() : AutoPromotionLimit(0), CurrentTimeStep(0) {}
 
-// LoadFile Implementation
+// LoadFile 
 void Restaurant::LoadFile(const string& filename) {
     ifstream fin(filename);
     if (!fin.is_open()) {
@@ -163,66 +163,90 @@ void Restaurant::LoadFile(const string& filename) {
         return;
     }
 
-    string line;
-    while (getline(fin, line)) {
-        if (line.empty()) continue;
-        stringstream ss(line);
-        string type;
-        ss >> type;
+    int numNormal, numVIP, numVegan;
+    int speedNormal, speedVIP, speedVegan;
+    int breakDuration ,breakNormal, breakVIP, breakVegan;
 
-        if (type == "Cook") {
-            string spec; int speed, breakDur, ordersBeforeBreak;
-            ss >> spec >> speed >> breakDur >> ordersBeforeBreak;
+    //  read num of cooks for every type
+    fin >> numNormal >> numVIP >> numVegan;
 
-            Cook* c = new Cook();
-            if (spec == "Normal") c->setSpecialization(NORMAL);
-            else if (spec == "Vegan") c->setSpecialization(VEGAN);
-            else if (spec == "VIP") c->setSpecialization(VIP);
+    // read speeds 
+    fin >> speedNormal >> speedVIP >> speedVegan;
 
-            c->setBaseSpeed(speed); // Use setBaseSpeed for baseSpeed
-            c->setBreakDuration(breakDur);
-            c->setOrdersBeforeBreak(ordersBeforeBreak);
+    //  break 
+    fin >>breakDuration  >> breakVIP >> breakVegan >>breakNormal ;
 
-            if (spec == "Normal") normalCooks.InsertEnd(c);
-            else if (spec == "Vegan") veganCooks.InsertEnd(c);
-            else if (spec == "VIP") vipCooks.InsertEnd(c);
+    // read auto promotion limit
+    fin >> AutoPromotionLimit;
+
+    // num of events
+    int numEvents;
+    fin >> numEvents;
+
+    // creating cooks
+    for (int i = 0; i < numNormal; ++i) {
+        Cook* c = new Cook();
+        c->setSpecialization(NORMAL);
+        c->setBaseSpeed(speedNormal);
+        c->setBreakDuration(breakNormal);
+        normalCooks.InsertEnd(c);
+    }
+    for (int i = 0; i < numVIP; ++i) {
+        Cook* c = new Cook();
+        c->setSpecialization(VIP);
+        c->setBaseSpeed(speedVIP);
+        c->setBreakDuration(breakVIP);
+        vipCooks.InsertEnd(c);
+    }
+    for (int i = 0; i < numVegan; ++i) {
+        Cook* c = new Cook();
+        c->setSpecialization(VEGAN);
+        c->setBaseSpeed(speedVegan);
+        c->setBreakDuration(breakVegan);
+        veganCooks.InsertEnd(c);
+    }
+
+    // reading event
+    for (int i = 0; i < numEvents; ++i) {
+        string eventType;
+        fin >> eventType;
+        if (eventType == "R") {
+            string orderType;
+            int size, id, time;
+            double price;
+            fin >> orderType >> time   >> id >>size >> price;
+            Order* o = new Order();
+            if (orderType == "N") o->setOrderType(NORMAL);
+            else if (orderType == "V") o->setOrderType(VIP);
+            else if (orderType == "G") o->setOrderType(VEGAN);
+
+            o->setOrderSize(size);
+            o->setID(id);
+            o->setArrivalTime(time);
+            o->setOrderPrice(price);
+
+            Event* e = new Event(ARRIVAL, time, o, id);
+            events.enqueue(e);
         }
-        else if (type == "Event") {
-            string evtType; int ts, id, size; string orderType; double price;
-            ss >> evtType >> ts;
-
-            if (evtType == "Arrival") {
-                ss >> orderType >> size >> price >> id;
-                Order* o = new Order();
-                if (orderType == "Normal") o->setOrderType(NORMAL);
-                else if (orderType == "Vegan") o->setOrderType(VEGAN);
-                else if (orderType == "VIP") o->setOrderType(VIP);
-                o->setOrderSize(size);
-                o->setOrderPrice(price);
-                o->setID(id);
-
-                Event* e = new Event(ARRIVAL, ts, o);
-                events.enqueue(e);
-            }
-            else if (evtType == "Promotion") {
-                double extraMoney;
-                ss >> id >> extraMoney;
-                Event* e = new Event(PROMOTION, ts, nullptr, id, extraMoney);
-                events.enqueue(e);
-            }
-            else if (evtType == "Cancellation") {
-                ss >> id;
-                Event* e = new Event(CANCELLATION, ts, nullptr, id);
-                events.enqueue(e);
-            }
+        else if (eventType == "X") {
+            int time, id;
+            fin >> time >> id;
+            Event* e = new Event(CANCELLATION, time, nullptr, id);
+            events.enqueue(e);
         }
-        else if (type == "AutoPromotionLimit") {
-            ss >> AutoPromotionLimit;
+        else if (eventType == "P") {
+            int time, id;
+            double extraMoney;
+            fin >> time >> id >> extraMoney;
+            Event* e = new Event(PROMOTION, time, nullptr, id, extraMoney);
+            events.enqueue(e);
         }
     }
 
     fin.close();
     cout << "File loaded successfully.\n";
+    cout << "Events loaded: " << events.GetCount() << endl;
+
 }
 
 // SimpleSimulator Implementation
@@ -280,8 +304,17 @@ void Restaurant::SimpleSimulator() {
         cout << "Finished Orders: " << finishedOrders.GetCount() << endl;
 
         CurrentTimeStep++;
+        if (events.isEmpty() &&
+            normalOrders.isEmpty() &&
+            veganOrders.isEmpty() &&
+            vipOrders.isEmpty() &&
+            inServiceOrders.isEmpty()) {
+            break;
+        }
+
     }
 
     cout << "\nSimulation finished." << endl;
+    
 }
 
