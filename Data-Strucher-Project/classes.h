@@ -5,6 +5,7 @@
 #include <string>
 #include "LinkedQueue.h"
 #include "Linkedlist.h"
+
 using namespace std;
 
 // ENUMS
@@ -156,7 +157,7 @@ private:
 
 public:
     Restaurant();
-    void LoadFile(const std::string& filename);
+    void LoadFile(const string& filename);
     void SimpleSimulator();
 };
 

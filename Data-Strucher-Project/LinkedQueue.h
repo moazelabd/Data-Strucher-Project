@@ -1,5 +1,3 @@
-
-
 #ifndef LINKED_QUEUE_
 #define LINKED_QUEUE_
 

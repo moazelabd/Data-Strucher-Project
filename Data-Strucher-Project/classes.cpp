@@ -2,6 +2,8 @@
 #include <sstream>
 #include <fstream>
 #include "classes.h"
+#include "LinkedQueue.h"
+
 using namespace std;
 /*
 
@@ -260,8 +262,9 @@ void Restaurant::SimpleSimulator() {
         !vipOrders.isEmpty() ||
         !inServiceOrders.isEmpty())
     {
-        cout << "\nTime Step: " << CurrentTimeStep << endl;
-
+        if (CurrentTimeStep >= 1) {
+            cout << "\nTime Step: " << CurrentTimeStep << endl;
+        }
         Event* e;
         while (events.peek(e) && e->getTimeStep() == CurrentTimeStep) {
             events.dequeue(e);
@@ -296,21 +299,20 @@ void Restaurant::SimpleSimulator() {
                 finishedOrders.InsertEnd(finishedO);
             }
         }
+        if (CurrentTimeStep >= 1) {
+            if (normalOrders.GetCount() == 0 && veganOrders.GetCount() == 0 && vipOrders.GetCount() == 0) {
+                cout << "no orders in waiting" << endl;
+            } else {
+                cout << "Normal Orders waiting: " << normalOrders.GetCount() << endl;
+                cout << "Vegan Orders waiting: " << veganOrders.GetCount() << endl;
+                cout << "VIP Orders waiting: " << vipOrders.GetCount() << endl;
+            }
+            cout << "In-Service Orders: " << inServiceOrders.GetCount() << endl;
+            cout << "Finished Orders: " << finishedOrders.GetCount() << endl;
 
-        cout << "Normal Orders waiting: " << normalOrders.GetCount() << endl;
-        cout << "Vegan Orders waiting: " << veganOrders.GetCount() << endl;
-        cout << "VIP Orders waiting: " << vipOrders.GetCount() << endl;
-        cout << "In-Service Orders: " << inServiceOrders.GetCount() << endl;
-        cout << "Finished Orders: " << finishedOrders.GetCount() << endl;
-
-        CurrentTimeStep++;
-        if (events.isEmpty() &&
-            normalOrders.isEmpty() &&
-            veganOrders.isEmpty() &&
-            vipOrders.isEmpty() &&
-            inServiceOrders.isEmpty()) {
-            break;
+            
         }
+        CurrentTimeStep++;
 
     }
 
